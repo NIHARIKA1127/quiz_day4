@@ -1,0 +1,169 @@
+<html>
+<head>
+<style type="text/css">
+#container{
+background-color:#1ac6ff;
+height:700px;
+width:700px;
+margin:100px auto;
+border_radius:20px;
+box-shadow: 0 0 3px rgba(0,0,0,0.1);
+-webkit-border-radius:20px;
+-moz-border-radius:20px;
+}
+#test{
+
+padding:10px 40px 40px 40px;
+
+}
+#test_status
+{
+
+padding:10px 40px 40px 40px;
+}
+#timeGauge
+{
+	background-color:green;
+	margin-left:30px;
+	border-radius:50%;
+}
+#counter
+{
+margin-left:30px;
+}
+</style>
+</head>
+<body>
+<div id="container">
+<h2 id="test_status"></h2>
+<div id="test"></div>
+
+   <div id="timer">
+
+                <div id="counter"></div>
+
+                <div id="btimeGauge"></div>
+
+                <progress value="10" id="timeGauge"></progress>
+
+            </div>
+
+
+</div>
+<script type="text/javascript">
+
+var pos=0,test,test_status,question,choice,choices,chA,chB,chC,chD ,correct=0;
+var  questions=[
+	["what is the capital of India?","Delhi","Mumbai","kolkata","Hyderabad","A"],
+	["what is 10+4?","12","14","16","18","B"],
+	["what is 20 - 9?", "7", "13", "11" ,"15","C"],
+	["what is 7 X 3?", "21", "24","25", "70", "A"],
+	["what is 8/2?", "10","2", "2", "4", "D"]
+
+];
+let lastquestion=questions.length-1;
+
+const questionTime=10;
+const guageWidth=150;
+let count=0;
+const gaugeprogressunit= guageWidth/questionTime;
+let TIMER=setInterval(countReader,1000);
+function countReader()
+{
+	if(count<=questionTime)
+	{
+		counter.innerHTML=count;
+		timeGauge.style.width= gaugeprogressunit * count +"px";
+		count++
+	}
+	else
+	{
+	
+		count=0;
+		if(pos<lastquestion)
+		{
+	
+			checkAns();
+			
+			
+		}
+		else{
+		clearInterval(TIMER);
+		{
+		
+			checkAns();
+		
+			
+		}
+	}
+
+	}
+  }
+ function _(x)
+ {
+	return document.getElementById(x);
+ }
+
+function renderQuestion()
+{
+	
+	
+	test = _("test");
+		
+
+	_("test_status").innerHTML=" Questuion "+(pos+1)+" 0f " +questions.length;
+	question = questions[pos][0];
+	chA=questions[pos][1];
+	chB=questions[pos][2];
+	chC=questions[pos][3];
+	chD=questions[pos][4];
+	test.innerHTML="<h3>"+question+"</h3>";
+	test.innerHTML+="<input type='radio' name='choices' value='A'>"+chA+"<br>";
+	test.innerHTML+="<input type='radio' name='choices' value='B'>"+chB+"<br>";
+	test.innerHTML+="<input type='radio' name='choices' value='C'>"+chC+"<br>";
+	test.innerHTML+="<input type='radio' name='choices' value='D'>"+chD+"<br><br>";
+		
+		
+		}
+function checkAns()
+{
+	choices=document.getElementsByName("choices");
+	for(var i=0;i<choices.length;i++)
+	{
+		if(choices[i].checked)
+		{
+			choice =choices[i].value;
+		}
+	}
+	if(choice==questions[pos][5])
+	{
+		correct++;
+	}
+	
+	pos++;
+	score();
+	
+}
+function score()
+{
+
+test=_("test");
+	if(pos>=questions.length)
+	{
+		test.innerHTML="<h2>you got "+correct+" of "+questions.length+" questions correct</h2>";
+			_("test_status").innerHTML="Test completed";
+			pos=0;
+			correct=0;
+			return false;
+			
+	}
+	renderQuestion();
+}
+
+
+
+window.addEventListener("load",renderQuestion,false);
+
+</script>
+</body>
+</html>
